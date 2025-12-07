@@ -124,7 +124,7 @@ export default App;
 ### 5. Данные
 
 #### `src/modules/mock.ts`
-Определение типов и моковых данных. Убедитесь, что в папке `src/assets` есть изображения `1.jpg` ... `8.jpg`. Взять их можно в ...
+Определение типов и моковых данных. Убедитесь, что в папке `src/assets` есть изображения `1.jpg` ... `8.jpg`. Взять их можно в <a href="https://github.com/David-bomb/CLIP_method/tree/main/card_images">папке</a>.
 
 ```typescript
 import img1 from '../assets/1.jpg';
@@ -595,7 +595,14 @@ npm run dev
 
 Тут у вас должно получиться простое React-приложение интернет магазина.
 
-(фотографии)
+**Главная**
+<img src="https://github.com/David-bomb/CLIP_method/blob/main/screens/index.png">
+
+**Каталог**
+<img src="https://github.com/David-bomb/CLIP_method/blob/main/screens/catalog.png">
+
+**Подробнее**
+<img src="https://github.com/David-bomb/CLIP_method/blob/main/screens/about.png">
 
 
 ## Интеграция CLIP-модели
@@ -730,7 +737,7 @@ export const SearchBar: FC<Props> = ({ value, setValue, onImageSelect, isProcess
 }
 ```
 
-### `CatalogPage.tsx`
+### `src/pages/CatalogPage.tsx`
 
 Добавим загрузку отображение загрузки моделей в каталок.
 
@@ -1133,3 +1140,10 @@ self.addEventListener('message', async (event) => {
     }
 });
 ```
+
+
+Для проверки работы подготовлены картинки в <a href="https://github.com/David-bomb/CLIP_method/tree/main/search_examples">папке</a>. 
+
+Вот пример поиска при вводе картинки с белой кроватью:
+
+<img src="https://github.com/David-bomb/CLIP_method/blob/main/screens/image_search.png">
