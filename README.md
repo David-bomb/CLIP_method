@@ -1229,7 +1229,7 @@ function App() {
 
         <div className="d-flex flex-column gap-2">
             <Button variant="primary" onClick={() => fileInputRef.current?.click()} disabled={!ready}>
-                {ready ? "📷 Загрузить фото" : "Загрузка нейросети..."}
+                {ready ? "Загрузить фото" : "Загрузка нейросети..."}
             </Button>
             
             {!ready && <ProgressBar now={progress} label={`${Math.round(progress)}%`} animated />}
@@ -1308,4 +1308,3 @@ npm run dev
 Вот пример поиска при вводе картинки с белой кроватью:
 
 <img src="https://github.com/David-bomb/CLIP_method/blob/main/screens/image_search.png">
-
