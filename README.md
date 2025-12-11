@@ -92,7 +92,9 @@ npm install bootstrap react-bootstrap
 В папку src добавье папку modules. 
 
 #### `src/modules/mock.ts`
-Определение типов и моковых данных. Убедитесь, что в папке `src/assets` есть изображения `1.jpg` ... `8.jpg`, `default.jpg`. Взять их можно в <a href="https://github.com/David-bomb/CLIP_method/tree/main/card_images">папке</a>.
+Определение типов и моковых данных. Убедитесь, что в папке `src/assets` есть изображения `1.jpg` ... `8.jpg`, `default.jpg`. Взять их можно в <a href="https://github.com/David-bomb/CLIP_method/tree/main/card_images">папке</a>. 
+
+**Примечание:** Mock данные **обязательно** описывать на английском языке. Дело в том, что создатель библиотеки `transformers.js`, Xenova, еще не конвертировал под свою библиотеку ни одну поддерживающую русский язык модель. На русском языке векторы будут формироваться неправильно. 
 
 ```typescript
 import img1 from '../assets/1.jpg';
@@ -116,79 +118,79 @@ export interface IFurniture {
 export const FURNITURE_MOCK: IFurniture[] = [
     {
         id: 1,
-        name: "Диван 'Облако'",
-        description: "Мягкий белый трехместный диван с качественной обивкой.",
+        name: "Cloud Sofa",
+        description: "Soft white three-seater sofa with high-quality upholstery.",
         price: 45990,
         image: img1
     },
     {
         id: 2,
-        name: "Кресло 'Ретро'",
-        description: "Удобное кресло на деревянных ножках. Классический дизайн.",
+        name: "Retro Armchair",
+        description: "Comfortable armchair with wooden legs and red upholstery.",
         price: 12500,
         image: img2
     },
     {
         id: 3,
-        name: "Стол обеденный",
-        description: "Массивный стол из натурального дуба. Вмещает до 6 человек.",
+        name: "Dining Table",
+        description: "Solid natural oak table. Seats up to 6 people.",
         price: 28000,
         image: img3
     },
     {
         id: 4,
-        name: "Стул пластиковый",
-        description: "Эргономичный белый стул с деревянными ножками.",
+        name: "Plastic Chair",
+        description: "Gray plastic chair with plastic legs.",
         price: 3500,
         image: img4
     },
     {
         id: 5,
-        name: "Торшер напольный",
-        description: "Черный металлический светильник в стиле лофт.",
+        name: "Floor Lamp",
+        description: "Gray metal loft-style floor lamp.",
         price: 5900,
         image: img5
     },
     {
         id: 6,
-        name: "Комод белый",
-        description: "Вместительный комод с тремя ящиками без ручек.",
+        name: "White Dresser",
+        description: "White dresser with three handle-less drawers.",
         price: 15990,
         image: img6
     },
     {
         id: 7,
-        name: "Кровать двуспальная",
-        description: "Удобная кровать с мягким изголовьем и подъемным механизмом.",
+        name: "Double Bed",
+        description: "White double bed with a padded headboard.",
         price: 32000,
         image: img7
     },
     {
         id: 8,
-        name: "Полка настенная",
-        description: "Деревянная полка необычной геометрической формы.",
+        name: "Wall Shelf",
+        description: "Wooden shelf with an unusual S-shaped design.",
         price: 1900,
         image: img8
     },
-    // --- Товары без картинок (для теста default.jpg) ---
+    // Карточки без картинок. Это показательный пример того, что поиск идет именно по описанию.
     {
         id: 9,
-        name: "Шкаф-купе",
-        description: "Большой шкаф с зеркалом во весь рост.",
+        name: "Sliding Wardrobe",
+        description: "Large oak sliding-door wardrobe with a full-length mirror.",
         price: 45000,
         image: defaultImg
     },
     {
         id: 10,
-        name: "Тумба прикроватная",
-        description: "Маленькая тумбочка для спальни.",
+        name: "Bedside Table",
+        description: "Small oak bedside table for the bedroom.",
         price: 4500,
         image: defaultImg
     },
     {
         id: 11,
-        name: "Зеркало настенное",
-        description: "Круглое зеркало в золотой раме.",
+        name: "Wall Mirror",
+        description: "Round mirror in a gold frame.",
         price: 3200,
         image: defaultImg
     }
@@ -543,6 +545,39 @@ event.data содержит данные, которые мы передали �
 #### Полный код
 
 ```tsx
+import { 
+    env, 
+    AutoTokenizer, 
+    AutoProcessor, 
+    SiglipTextModel, 
+    SiglipVisionModel,
+    RawImage 
+} from '@huggingface/transformers';
+
+env.allowLocalModels = false;
+env.allowRemoteModels = true;
+
+const MODEL_ID = 'Xenova/siglip-base-patch16-224';
+
+class SiglipService {
+    static tokenizer: any = null;
+    static processor: any = null;
+    static textModel: any = null;
+    static visionModel: any = null;
+
+    static async init(progress_callback?: (data: any) => void) {
+        if (!this.tokenizer) {
+            // Используем q8 для баланса качества и скорости
+            const options = { device: 'wasm', dtype: 'q8' } as const;
+
+            this.tokenizer = await AutoTokenizer.from_pretrained(MODEL_ID, { progress_callback });
+            this.processor = await AutoProcessor.from_pretrained(MODEL_ID, { progress_callback });
+            this.textModel = await SiglipTextModel.from_pretrained(MODEL_ID, {...options, progress_callback });
+            this.visionModel = await SiglipVisionModel.from_pretrained(MODEL_ID, {...options, progress_callback });
+        }
+    }
+}
+
 self.addEventListener('message', async (event) => {
     const { type, data } = event.data;
 
