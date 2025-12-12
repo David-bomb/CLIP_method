@@ -1131,7 +1131,7 @@ function App() {
   }, [imageEmbedding, textEmbeddings]);
 ```
 
-> **Примечание про Threshold (порог):** Порог был взят маленький в силу особенности SigLIP, так как в нем вместо softmax используется Sigmoid. Подробнее про это можно посмотреть в виде <a href="https://habr.com/ru/articles/908168/">статьи</a>, а также в виде <a href="https://github.com/David-bomb/CLIP_method/blob/main/additional/CLIP_meme.jpg">мема</a>. 
+> **Примечание про Threshold (порог):** Порог был взят маленький в силу особенности SigLIP, так как в нем вместо softmax используется Sigmoid. Подробнее про то, почему так сделано (да и про весь CLIP в целом) можно посмотреть в <a href="https://habr.com/ru/articles/908168/">статье</a>, а наглядное сравнение выходных формул CLIP и SigLIP можно посмотреть в виде <a href="https://github.com/David-bomb/CLIP_method/blob/main/additional/CLIP_meme.jpg">мема</a>. 
 
 ### 4. Обновление интерфейса и функция сброса
 
